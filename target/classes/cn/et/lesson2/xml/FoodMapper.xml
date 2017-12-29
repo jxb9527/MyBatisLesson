@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace=接口的包名点类名  -->
+<mapper namespace="cn.et.lesson2.xml.FoodMapper">
+  <!-- 
+  	使用#{键}传值方式实际上是使用占位符？来代替，是字符串是会自己添加单引号
+  	使用${键}传值方式实际上是使用直接替换对应的键的方式，用这种方式比如字符串，它不会加单引号。注意，如果是字符串的时候要手工添加''（不安全）
+  	使用#{索引}传值
+  	接口绑定,就是将接口中的方法和对应的sql声明进行绑定.
+  	接口绑定的参数，可以通过索引的方式获取，索引从0开始。比如（"zs","aa"） 0="zs" 1="aa" 同时还有默认的键 param1="zs" param2="aa"
+  	resultType="java.util.Map"
+  	resultType="map" 别名
+  	默认的别名在TypeAliasRegistry这个类中有
+   -->
+   <!-- 使用Map传值 方式-->
+  <select id="queryFood" resultType="java.util.Map">
+  	<!--  select * from food where foodname=#{0}-->
+  	 select * from food where foodname=#{param1}
+  	
+  </select>
+  
+   <select id="queryFoodByFoodName" resultType="food">
+  	 select * from food where foodname like '%${foodName}%'
+  	
+  </select>
+  
+  <delete id="deleteFood">
+  	delete from food where foodid=#{0}
+  </delete>
+  
+  <insert id="saveFood">
+  <!-- selectKey可以帮我们在程序中获取主键 -->
+  	<selectKey keyProperty="foodId" order="BEFORE" resultType="int" statementType="STATEMENT">
+  		select Food_Sec.Nextval from dual
+  	</selectKey>
+  	insert into food values(#{foodId},#{foodName},#{price}) 
+  </insert>
+</mapper>

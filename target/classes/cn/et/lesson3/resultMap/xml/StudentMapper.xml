@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace=接口的包名点类名  -->
+<mapper namespace="cn.et.lesson3.resultMap.xml.StudentMapper">
+
+<!-- 映射多对1的关系 -->
+	<resultMap type="student" id="studentMap" autoMapping="true">
+		<id column="sid" property="sid" />
+		<!-- 多对一使用 association标签关联-->
+		<!-- 	select * from grade where gid=#{学生信息中的gid} -->
+		<association property="grade" column="gid" select="cn.et.lesson3.resultMap.xml.GradeMapper.queryGradeByGid"></association>
+	</resultMap>
+
+
+  <select id="queryFood" resultType="java.util.Map">
+  	select * from food where foodname like '%${foodName}%'
+  </select>
+  
+  
+  <select id="queryStudent" resultMap="studentMap">
+  	select * from student where sid=#{0}
+  </select>
+  
+  <select id="queryStudentByGid" resultType="student">
+  	select * from student where sid=#{0}
+  </select>
+  
+</mapper>

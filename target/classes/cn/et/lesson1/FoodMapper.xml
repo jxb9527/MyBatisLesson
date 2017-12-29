@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace:叫命名空间用于区分多个文件中的相同的id  -->
+<mapper namespace="a">
+
+  <select id="selectFood" resultType="java.util.Map">
+    select * from food
+  </select>
+  
+  <select id="selectFoodById" resultType="java.util.Map">
+    select * from food where foodid=1
+  </select>
+  
+  <update id="updateFood" >
+    update food set foodname='炒菜',price=5 where foodid=2
+  </update>
+ 
+  <delete id="deleteFood">
+   	delete from food where foodid=2
+  </delete>
+  <!-- 
+  	使用#{键}传值方式实际上是使用占位符？来代替，是字符串是会自己添加单引号
+  	使用${键}传值方式实际上是使用直接替换对应的键的方式，用这种方式比如字符串，它不会加单引号。注意，如果是字符串的时候要手工添加''（不安全）
+  
+   -->
+   <!-- 使用Map传值 方式-->
+  <select id="selectFoodByMapParam" resultType="java.util.Map">
+  
+  	<!-- select * from food where price=#{myPrice} and foodname=#{myFoodName} -->
+  	
+  	select * from food where price=${myPrice} and foodname='${myFoodName}'
+  	
+  </select>
+  
+  <!-- 使用Object（Food）的传值方式 -->
+  <select id="selectFoodByObjectParam" resultType="java.util.Map">
+  
+  	 <!-- select * from food where price=#{myPrice} and foodname=#{myFoodName} -->
+  	
+  	select * from food where price=${myPrice} and foodname='${myFoodName}'
+  	
+  </select>
+  
+  <!--  -->
+  <insert id="saveFood">
+  	insert into food values(Food_Sec.Nextval,#{myFoodName},#{myPrice})
+  </insert>
+</mapper>

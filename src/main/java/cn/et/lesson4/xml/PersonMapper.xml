@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace=接口的包名点类名  -->
+<mapper namespace="cn.et.lesson4.xml.PersonMapper">
+	
+	<!-- 
+		<select id="queryPerson" resultType="cn.et.lesson4.xml.Person">
+		select * from Person where 1=1
+		<if test="pname!=null">
+			and pname like '%${pname}%'
+		</if>
+		<if test="page!=null">
+			and page like '%${page}%'
+		</if>
+	</select> -->
+	
+	<!-- where标签下如果有多个判断条件有一个判断条件满足，会自己加上WHERE，同时去掉一个and，反之没有任何条件满足则不会加上WHERE。如果后面有多个判断条件满足，只会去掉第一个满足判断条件下的and 
+	<select id="queryPerson" resultType="cn.et.lesson4.xml.Person">
+		select * from Person
+		<where>
+			<if test="pname!=null">
+				and pname like '%${pname}%'
+			</if>
+			<if test="page!=null">
+				and page like '%${page}%'
+			</if>
+		</trim>
+	</where> -->
+	
+	
+	<!-- 
+		trim标签，灵活度更高.
+			prefix 配置的参数会被添加到在sql语句开始的地方
+			prefixOverrides sql语句开始出现的参数会被覆盖。
+			suffix 
+			suffixOverrides 
+	-->
+	<select id="queryPerson" resultType="cn.et.lesson4.xml.Person">
+		select * from Person
+		<trim prefix="where" prefixOverrides="and">
+			<if test="pname!=null">
+				and pname like '%${pname}%'
+			</if>
+			<if test="page!=null">
+				and page like '%${page}%'
+			</if>
+		</trim>
+	</select>
+	
+	<!-- set标签会自己加set  同时会去掉满足条件后面有没有逗号出现 有,（逗号）则去掉 没有则不去掉 -->
+	<!-- <update id="updatePerson">
+		update person
+		<set>
+			<if test="pname!=null">
+				pname=#{pname},
+			</if>
+			<if test="page!=null">
+				page=#{page},
+			</if>
+			<if test="psex!=null">
+				psex=#{psex}
+			</if>
+		</set>
+		where pid=#{pid}
+	</update> -->
+	
+	
+	<!-- trim实现 -->
+	<update id="updatePerson">
+		update person
+		<trim prefix="sex" prefixOverrides="" suffixOverrides="," suffix="">
+			<if test="pname!=null">
+				pname=#{pname},
+			</if>
+			<if test="page!=null">
+				page=#{page},
+			</if>
+			<if test="psex!=null">
+				psex=#{psex}
+			</if>
+		</trim>
+		where pid=#{pid}
+	</update>
+	
+	
+	<!-- 相当于java中 switch语句-->
+	<select id="queryBySex" resultType="cn.et.lesson4.xml.Person">
+		select * from Person where 1=1
+		<choose>
+			<when test="sex!=null">
+				and psex =#{sex}
+			</when>
+			<otherwise>
+				and psex=1
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<!-- foreach
+			open表示 循环开始之前追加的sql
+			close表示循环结束之后追加的sql
+			collection 指定传入的值的集合 
+			item 临时变量
+			separator 在非最后一次的循环值上添加分隔符,（逗号）
+	 -->
+	<select id="queryPersonByAnyAge" resultType="cn.et.lesson4.xml.Person">
+		select * from Person
+		<foreach item="age" collection="ageList" open=" where page in(" close=")" separator=",">
+			${age}
+		</foreach>
+	</select>
+	
+</mapper>

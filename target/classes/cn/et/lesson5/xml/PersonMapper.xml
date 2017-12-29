@@ -1,0 +1,22 @@
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace=接口的包名点类名  -->
+<mapper namespace="cn.et.lesson5.xml.PersonMapper">
+<!-- 
+	mybatis默认策略是FiFo 缓存类FifoCache
+	内存数据不足时，需要一种机制来保证内存不出现溢出，需要将旧的数据清除，最先加入的数据，最先清除。
+	LRU 最近使用次数最少的，被优先清除
+	LFU 最近一段时间内使用的次数最少的清除
+ -->
+	<cache eviction="" flushInterval="60000" size="512" readOnly="true" type="cn.et.lesson5.xml.RedisCach"></cache>
+	
+	
+	
+	<select id="queryPersonById" resultType="cn.et.lesson5.xml.Person">
+		select * from Person where pid=#{0}
+	</select>
+	
+</mapper>

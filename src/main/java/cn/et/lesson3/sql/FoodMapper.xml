@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--namespace=接口的包名点类名  -->
+<mapper namespace="cn.et.lesson3.sql.FoodMapper">
+
+<sql id="commonSql">
+	select * from
+</sql>
+
+  <select id="queryFood" resultType="java.util.Map">
+  	<include refid="commonSql"></include>
+  	food where foodname like '%${foodName}%'
+  </select>
+</mapper>

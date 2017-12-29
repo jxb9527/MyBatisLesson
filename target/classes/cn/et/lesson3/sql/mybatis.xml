@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<!--是mybatis核心配置文件，主要配置数据的连接信息 -->
+<configuration>
+  <!-- 加载资源文件 -->
+  <properties resource="jdbcOracl.properties"></properties>
+  
+  <!-- 给类配置别名 -->
+  <typeAliases>
+  	<typeAlias type="cn.et.lesson2.xml.Food" alias="food"></typeAlias>
+  </typeAliases>
+  
+  <environments default="development">
+    <environment id="development">
+      <!-- 事务管理器 默认使用jdbc事务 -->
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driverClass}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${userName1}"/>
+        <property name="password" value="${passWord}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <!-- 一张表一个mapper,用来做增删改查的映射 -->
+  <mappers>
+  	  <mapper resource="cn/et/lesson3/sql/FoodMapper.xml"/>
+  </mappers>
+</configuration>
